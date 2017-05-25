@@ -1,4 +1,4 @@
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
 /**
   * Created by onegrx on 25.05.17.
@@ -14,16 +14,17 @@ class ServerActor extends Actor {
   override def receive: Receive = {
 
     case request@SearchRequest(_) =>
+      val sendTo = sender()
       println("Obtained: " + request)
       println("Sending to search actors")
-      val sw1 = internal.actorOf(Props(SearchActor(1)))
-      val sw2 = internal.actorOf(Props(SearchActor(2)))
+      val sw1 = internal.actorOf(Props(SearchActor(1, sendTo)))
+      val sw2 = internal.actorOf(Props(SearchActor(2, sendTo)))
       sw1 ! request
       sw2 ! request
 
-    case response@SearchResponse(title, price) =>
+    case response@SearchResponse(title, price, sendTo) =>
       println("Got response from search actor")
-      selection ! response
+      sendTo ! response
 
     case request@OrderRequest(_) =>
       println("Obtained: " + request)
