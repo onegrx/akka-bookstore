@@ -1,0 +1,6 @@
+Thinking in Java 100
+TDD in practice 40
+Design Patterns 60
+Scala In Action 75
+Learn You Some Erlang 20
+Akka Course 65

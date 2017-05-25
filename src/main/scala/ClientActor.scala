@@ -9,12 +9,13 @@ class ClientActor extends Actor {
   val path = "akka.tcp://remote_system@127.0.0.1:3552/user/remote"
   val selection = context.actorSelection(path)
 
-
   override def receive: Receive = {
 
-    case s@SearchRequest(title) =>
-      println("Gonna search " + title)
-      selection ! s
+    case request@SearchRequest(title) =>
+      selection ! request
+
+    case SearchResponse(title, price) =>
+      println(s"Book found: $title, price is: $price")
 
   }
 }

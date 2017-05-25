@@ -1,6 +1,6 @@
 import java.io.File
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
 import scala.io.Source
@@ -11,12 +11,11 @@ import scala.io.Source
 object Server extends App {
 
   val path = getClass.getResource("/server_app.conf").getPath
-  val file: File = new File(path)
+  val file = new File(path)
   val config = ConfigFactory.parseFile(file)
 
   val system = ActorSystem("remote_system", config)
-
   val actor = system.actorOf(Props[ServerActor], name = "remote")
 
-  println("Server started.")
+  println("Server started. Listening for messages...")
 }
