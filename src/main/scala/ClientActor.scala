@@ -17,5 +17,11 @@ class ClientActor extends Actor {
     case SearchResponse(title, price) =>
       println(s"Book found: $title, price is: $price")
 
+    case request@OrderRequest(title) =>
+      selection ! request
+
+    case OrderResponse(title) =>
+      println(s"Book $title ordered successfully")
+
   }
 }

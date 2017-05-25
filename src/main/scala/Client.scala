@@ -26,8 +26,11 @@ object Client {
       val line: String = readLine()
 
       line match {
-        case "q" => System.exit(0)
+        case "q" =>
+          system.terminate()
+          System.exit(0)
         case "f" => actor ! SearchRequest(readLine("Book title: "))
+        case "o" => actor ! OrderRequest(readLine("Book title: "))
         case _ => println("Invalid command")
       }
     }
@@ -36,6 +39,7 @@ object Client {
   def showMenu(): Unit = {
     println("Bookstore client")
     println("f - find a book with price")
+    println("o - order a book")
     println("q - exit app")
   }
 }

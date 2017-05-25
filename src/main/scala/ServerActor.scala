@@ -13,7 +13,7 @@ class ServerActor extends Actor {
 
   override def receive: Receive = {
 
-    case request@SearchRequest(msg) =>
+    case request@SearchRequest(_) =>
       println("Obtained: " + request)
       println("Sending to search actors")
       val sw1 = internal.actorOf(Props(SearchActor(1)))
@@ -25,6 +25,15 @@ class ServerActor extends Actor {
       println("Got response from search actor")
       selection ! response
 
+    case request@OrderRequest(_) =>
+      println("Obtained: " + request)
+      println("Sending to order actor")
+      val orderActor = internal.actorOf(Props[OrderActor])
+      orderActor ! request
+
+    case response@OrderResponse(title) =>
+      println("Got response from order actor")
+      selection ! response
   }
 
 }
